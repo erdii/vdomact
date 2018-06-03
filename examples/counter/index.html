@@ -16,10 +16,14 @@
 			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 
+		<!-- this is were we mount our app component -->
 		<div id="appRoot"></div>
 
+		<!-- load babel for in-browser jsx-transformation -->
 		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-		<script src="../../dist/vdomact.js"></script>
+		<!-- load vDomAct -->
+		<script src="https://unpkg.com/@erdii/vdomact/dist/vdomact.min.js"></script>
+
 		<script type="text/babel">
 			/** @jsx vDomAct.createElement */
 
