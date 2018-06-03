@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>vDomAct - counter example</title>
+		<title>vDomAct - clock example</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
@@ -26,40 +26,52 @@
 		<script type="text/babel">
 			/** @jsx vDomAct.createElement */
 
+			function getLocaleTimeString() {
+				return new Date().toLocaleTimeString();
+			}
+
 			class App extends vDomAct.Component {
 				constructor(props) {
 					super(props);
 
 					this.state = {
-						counter: 0,
+						time: getLocaleTimeString(),
 					};
 
 					this.handleTimer = setInterval(() => {
 						this.setState({
-							counter: this.state.counter + 1,
+							time: getLocaleTimeString(),
 						});
-					}, 1000);
+					}, 50)
 				}
 
 				render() {
 					return (
-						<div onClick={this.resetCounter}>
-							{this.props.text}
-							&nbsp;
-							{this.state.counter}
+						<div style={{
+							position: "fixed",
+							top: 0,
+							left: 0,
+							right: 0,
+							bottom: 0,
+							margin: 0,
+							padding: 0,
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+						}}>
+							<div style={{
+								padding: "50px",
+								backgroundColor: "lightgrey",
+							}}>
+								{this.state.time}
+							</div>
 						</div>
 					);
-				}
-
-				resetCounter = () => {
-					this.setState({
-						counter: 0,
-					});
 				}
 			}
 
 			vDomAct.render(
-				<App text={"Counter:"} />,
+				<App />,
 				document.getElementById("appRoot")
 			);
 		</script>
