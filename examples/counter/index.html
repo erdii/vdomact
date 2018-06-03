@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="">
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<div id="appRoot"></div>
+
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+		<script src="../../dist/vdomact.js"></script>
+		<script type="text/babel">
+			/** @jsx vDomAct.createElement */
+
+			class App extends vDomAct.Component {
+				constructor(props) {
+					super(props);
+
+					this.state = {
+						counter: 0,
+					};
+
+					this.handleTimer = setInterval(() => {
+						this.setState({
+							counter: this.state.counter + 1,
+						});
+					}, 1000)
+				}
+
+				render() {
+					return (
+						<div onClick={this.resetCounter}>
+							{this.props.text}
+							&nbsp;
+							{this.state.counter}
+						</div>
+					);
+				}
+
+				resetCounter = () => {
+					this.setState({
+						counter: 0,
+					});
+				}
+			}
+
+			vDomAct.render(
+				<App text={"Counter:"} />,
+				document.getElementById("appRoot")
+			);
+		</script>
+	</body>
+</html>
