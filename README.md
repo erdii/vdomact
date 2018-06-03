@@ -2,11 +2,12 @@
 
 ### installation
 
-`npm i -S vdomact`
+`npm i -S @erdii/vdomact`
 
 ### usage
 
-**TODO**
+* **TODO**
+* see `examples/counter/index.html`
 
 
 ### inspiration
