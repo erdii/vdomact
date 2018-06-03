@@ -7,8 +7,7 @@
 ### usage
 
 * **TODO**
-* see `examples/counter/index.html`
-
+* see [homepage](https://erdii.github.io/vdomact/)
 
 ### inspiration
 
