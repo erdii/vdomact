@@ -12,17 +12,21 @@ export function createElement(type: string, props: any, ...children: any[]) {
 }
 
 export function setAttribute(dom: any, key: any, value: any) {
-	if (typeof value == 'function' && key.startsWith('on')) {
+	if (typeof value === "function" && key.startsWith("on")) {
 		const eventType = key.slice(2).toLowerCase();
 		dom.__vdomactHandlers = dom.__vdomactHandlers || {};
 		dom.removeEventListener(eventType, dom.__vdomactHandlers[eventType]);
 		dom.__vdomactHandlers[eventType] = value;
 		dom.addEventListener(eventType, dom.__vdomactHandlers[eventType]);
-	} else if (key == 'checked' || key == 'value' || key == 'className') {
+	} else if (key === "checked" || key === "value" || key === "className") {
 		dom[key] = value;
-	} else if (key == 'key') {
+	} else if (key === "key") {
 		dom.__vdomactKey = value;
-	} else if (typeof value != 'object' && typeof value != 'function') {
+	} else if (key === "style" && typeof value === "object") {
+		for (const prop in value) {
+			dom.style[prop] = value[prop];
+		}
+	} else if (typeof value !== "object" && typeof value !== "function") {
 		dom.setAttribute(key, value);
 	}
 }
