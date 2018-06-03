@@ -1,13 +1,30 @@
-// export library types
-export {
+// import library types
+import {
 	TMountNode,
 	TParentNode,
 } from "./types";
 
-// export library code
-export {
+// import library code
+import {
 	createElement,
 	render,
 	setAttribute,
 	Component,
 } from "./lib";
+
+// Default export "main" code
+export default {
+	createElement,
+	render,
+	Component,
+};
+
+// Named export all code and types
+export {
+	createElement,
+	render,
+	Component,
+	setAttribute,
+	TMountNode,
+	TParentNode,
+};
