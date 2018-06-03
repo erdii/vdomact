@@ -142,7 +142,7 @@ export function patch(dom: HTMLElement|Text, vdom: any, parent = dom.parentNode)
 	}
 }
 
-export class Component<P = {}, S = any> {
+export class Component<P = any, S = any> {
 	props: P;
 	state: S;
 	base?: TMountNode;
@@ -206,11 +206,11 @@ export class Component<P = {}, S = any> {
 	}
 
 	public componentWillMount() {
-		return undefined;
+		return;
 	}
 
 	public componentDidMount() {
-		return undefined;
+		return;
 	}
 
 	public shouldComponentUpdate(nextProps: P, nextState: S) {
@@ -218,22 +218,22 @@ export class Component<P = {}, S = any> {
 	}
 
 	public componentWillReceiveProps(props: P) {
-		return undefined;
+		return;
 	}
 
 	public componentWillUpdate(nextProps: P, nextState: S) {
-		return undefined;
+		return;
 	}
 
 	public render() {
-		return undefined;
+		return undefined as any;
 	}
 
 	public componentDidUpdate(prevProps: P, preState: S) {
-		return undefined;
+		return;
 	}
 
-	public componentWillUnMount() {
-		return undefined;
+	public componentWillUnmount() {
+		return;
 	}
 }
