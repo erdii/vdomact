@@ -1,7 +1,7 @@
 {
   "name": "@erdii/vdomact",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.0",
+  "description": "react-like virtual dom",
   "main": "dist/vdomact.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -13,6 +13,7 @@
     "build-js": "rollup -c",
     "watch-js": "rollup -cw",
     "clean": "rm -rf ./dist ./.rpt2_cache || true",
+    "prepack": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
