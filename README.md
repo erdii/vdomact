@@ -7,7 +7,7 @@
 ### usage
 
 * **TODO**
-* see [homepage](https://erdii.github.io/vdomact/)
+* see [examples](https://erdii.github.io/vdomact/)
 
 ### inspiration
 

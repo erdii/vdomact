@@ -36,37 +36,67 @@
 
 					this.state = {
 						time: getLocaleTimeString(),
+						running: false,
 					};
 
+					this.handleToggle = this.handleToggle.bind(this);
+
+					this.handleToggle();
+				}
+
+				render() {
+					return (
+						<div
+							style={{
+								position: "fixed",
+								top: 0,
+								left: 0,
+								right: 0,
+								bottom: 0,
+								margin: 0,
+								padding: 0,
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+							}}
+							>
+							<div
+								style={{
+									padding: "50px",
+									backgroundColor: "lightgrey",
+								}}
+								onClick={this.handleToggle}
+							>
+								{this.state.time}
+							</div>
+						</div>
+					);
+				}
+
+				enableTicks() {
 					this.handleTimer = setInterval(() => {
 						this.setState({
+							...this.state,
 							time: getLocaleTimeString(),
 						});
 					}, 50)
 				}
 
-				render() {
-					return (
-						<div style={{
-							position: "fixed",
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
-							margin: 0,
-							padding: 0,
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-						}}>
-							<div style={{
-								padding: "50px",
-								backgroundColor: "lightgrey",
-							}}>
-								{this.state.time}
-							</div>
-						</div>
-					);
+				disableTicks() {
+					clearInterval(this.handleTimer);
+				}
+
+				handleToggle() {
+					if (this.state.running) {
+						this.disableTicks();
+					} else {
+						this.enableTicks();
+					}
+
+					this.setState({
+						...this.state,
+						running: !this.state.running,
+					});
 				}
 			}
 
