@@ -1,5 +1,5 @@
 import typescript from "rollup-plugin-typescript2";
-import { uglify } from "rollup-plugin-uglify";
+import { terser } from "rollup-plugin-terser";
 
 const licenseText = `/**
  * Copyright 2018 erdii <erdiicodes@gmail.com>
@@ -32,7 +32,7 @@ export default [
 	createBundleConfig("dist/vdomact.js", defaultPlugins),
 	createBundleConfig("dist/vdomact.min.js", [
 		...defaultPlugins,
-		uglify({
+		terser({
 			output: {
 				comments: "all",
 			},
