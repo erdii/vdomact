@@ -1,5 +1,12 @@
 import { Component } from "./lib";
-import { IComponentProps, IContextProviderProps, IContextConsumerProps } from "./types";
+import { IComponentProps } from "./types";
+
+export interface IContextProviderProps<T> {
+	value: T;
+}
+export interface IContextConsumerProps<T> {
+	render: (value: T) => any;
+}
 
 const CONTEXT_LOOKUP = new Map();
 
