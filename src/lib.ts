@@ -1,7 +1,12 @@
 import {
 	TMountNode,
 	TParentNode,
+	IComponentProps,
 } from "./types";
+
+export const KEY_SYMBOL = Symbol();
+export const INSTANCE_SYMBOL = Symbol();
+export const HANDLER_SYMBOL = Symbol();
 
 export function createElement(type: string, props: any, ...children: any[]) {
 	return {
@@ -14,14 +19,14 @@ export function createElement(type: string, props: any, ...children: any[]) {
 export function setAttribute(dom: any, key: any, value: any) {
 	if (typeof value === "function" && key.startsWith("on")) {
 		const eventType = key.slice(2).toLowerCase();
-		dom.__vdomactHandlers = dom.__vdomactHandlers || {};
-		dom.removeEventListener(eventType, dom.__vdomactHandlers[eventType]);
-		dom.__vdomactHandlers[eventType] = value;
-		dom.addEventListener(eventType, dom.__vdomactHandlers[eventType]);
+		dom[HANDLER_SYMBOL] = dom[HANDLER_SYMBOL] || {};
+		dom.removeEventListener(eventType, dom[HANDLER_SYMBOL][eventType]);
+		dom[HANDLER_SYMBOL][eventType] = value;
+		dom.addEventListener(eventType, dom[HANDLER_SYMBOL][eventType]);
 	} else if (key === "checked" || key === "value" || key === "className") {
 		dom[key] = value;
 	} else if (key === "key") {
-		dom.__vdomactKey = value;
+		dom[KEY_SYMBOL] = value;
 	} else if (key === "style" && typeof value === "object") {
 		for (const prop in value) {
 			dom.style[prop] = value[prop];
@@ -99,7 +104,7 @@ export function patch(dom: HTMLElement|Text, vdom: any, parent = dom.parentNode)
 
 		for (const index in Array.from(dom.childNodes)) {
 			const child = dom.childNodes[index];
-			const key = (child as any).__vdomactKey || index;
+			const key = (child as any)[KEY_SYMBOL] || index;
 			pool[key] = child;
 		}
 
@@ -122,8 +127,8 @@ export function patch(dom: HTMLElement|Text, vdom: any, parent = dom.parentNode)
 
 		// remove old dom nodes
 		for (const key in pool) {
-			if (pool[key].__vdomactInstance) {
-				pool[key].__vdomactInstance.componentWillUnMount();
+			if (pool[key][INSTANCE_SYMBOL]) {
+				pool[key][INSTANCE_SYMBOL].componentWillUnMount();
 			}
 			pool[key].remove();
 		}
@@ -143,11 +148,11 @@ export function patch(dom: HTMLElement|Text, vdom: any, parent = dom.parentNode)
 }
 
 export class Component<P = any, S = any> {
-	props: P;
+	props: P & IComponentProps;
 	state: S;
 	base?: TMountNode;
 
-	constructor(props: P) {
+	constructor(props: P & IComponentProps) {
 		this.props = props || {};
 		this.state = null as any;
 	}
@@ -162,8 +167,8 @@ export class Component<P = any, S = any> {
 			const instance = new (vdom.type)(props);
 			instance.componentWillMount();
 			instance.base = render(instance.render(), parent);
-			instance.base.__vdomactInstance = instance;
-			instance.base.__vdomactKey = vdom.props.key;
+			instance.base[INSTANCE_SYMBOL] = instance;
+			instance.base[KEY_SYMBOL] = vdom.props.key;
 			instance.componentDidMount();
 			return instance.base;
 		} else {
@@ -177,10 +182,10 @@ export class Component<P = any, S = any> {
 			children: vdom.children,
 		};
 
-		if ((dom as any).__vdomactInstance && (dom as any).__vdomactInstance.constructor === vdom.type) {
-			(dom as any).__vdomactInstance.componentWillReceiveProps(props);
-			(dom as any).__vdomactInstance.props = props;
-			return patch(dom, (dom as any).__vdomactInstance.render(), parent);
+		if ((dom as any)[INSTANCE_SYMBOL] && (dom as any)[INSTANCE_SYMBOL].constructor === vdom.type) {
+			(dom as any)[INSTANCE_SYMBOL].componentWillReceiveProps(props);
+			(dom as any)[INSTANCE_SYMBOL].props = props;
+			return patch(dom, (dom as any)[INSTANCE_SYMBOL].render(), parent);
 		}
 
 		if (Component.isPrototypeOf(vdom.type)) {
@@ -217,7 +222,7 @@ export class Component<P = any, S = any> {
 		return nextProps !== this.props || nextState !== this.state;
 	}
 
-	public componentWillReceiveProps(props: P) {
+	public componentWillReceiveProps(nextProps: P) {
 		return;
 	}
 

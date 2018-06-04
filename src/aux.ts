@@ -1,22 +1,26 @@
 import { Component } from "./lib";
+import { IComponentProps, IContextProviderProps, IContextConsumerProps } from "./types";
 
 const CONTEXT_LOOKUP = new Map();
 
-export interface IContextConsumerProps {
-	render: (...args: any[]) => any;
-}
-
-export function createContext() {
+export function createContext<T = any>() {
 	const contextSymbol = Symbol();
 
-	const Provider = class ContextProvider extends Component {
-		constructor(props: any) {
+	const Provider = class ContextProvider extends Component<IContextProviderProps<T>> {
+		constructor(props: IContextProviderProps<T>) {
 			super(props);
-			// TODO: throw if contextSymbol is already in use
+
+			// throw if contextSymbol is already in use
+			if (CONTEXT_LOOKUP.has(contextSymbol)) {
+				throw new Error("CONTEXT_PROVIDER_CANNOT_BE_MOUNTED_MORE_THAN_ONCE_AT_A_TIME");
+			}
+
+			// register provider in lookup map
 			CONTEXT_LOOKUP.set(contextSymbol, this);
 		}
 
 		public componentWillUnmount() {
+			// unregister provider from lookup map
 			CONTEXT_LOOKUP.delete(contextSymbol);
 		}
 
@@ -25,19 +29,13 @@ export function createContext() {
 		}
 
 		public getContext() {
-			const context = {
-				...this.props,
-			};
-
-			delete context.children;
-
-			return context;
+			return this.props.value;
 		}
 	}
 
-	const Consumer = class ContextConsumer extends Component<IContextConsumerProps> {
+	const Consumer = class ContextConsumer extends Component<IContextConsumerProps<T>> {
 		public render() {
-			return this.props.render(CONTEXT_LOOKUP.get(contextSymbol).getContext());
+			return this.props.children(CONTEXT_LOOKUP.get(contextSymbol).getContext());
 		}
 	}
 

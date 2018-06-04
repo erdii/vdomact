@@ -2,6 +2,7 @@
 import {
 	TMountNode,
 	TParentNode,
+	IComponentProps,
 } from "./types";
 
 // import library code
@@ -27,4 +28,5 @@ export {
 	setAttribute,
 	TMountNode,
 	TParentNode,
+	IComponentProps,
 };
