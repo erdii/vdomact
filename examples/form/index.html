@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>vDomAct - login form example</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<!-- this is were we mount our app component -->
+		<div id="appRoot"></div>
+
+		<!-- load babel for in-browser jsx-transformation -->
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+		<!-- load vDomAct -->
+		<!-- <script src="../../dist/vdomact.js"></script> -->
+		<script src="https://unpkg.com/@erdii/vdomact/dist/vdomact.min.js"></script>
+
+		<script type="text/babel">
+			/** @jsx vDomAct.createElement */
+
+			class Form extends vDomAct.Component {
+				constructor(props) {
+					super(props);
+					this.handleSubmit = this.handleSubmit.bind(this);
+				}
+
+				render() {
+					return (
+						<div
+							style={{
+								padding: "50px",
+								backgroundColor: "lightgrey",
+							}}
+						>
+							<p>this is a login form example using ref like react's ref</p>
+
+							<br />
+
+							<input type="text" placeholder="username" ref={(el) => {
+								this.usernameEl = el;
+							}} />
+
+							<br />
+
+							<input type="password" placeholder="password" ref={(el) => {
+								this.passwordEl = el;
+							}} />
+
+							<br />
+
+							<input type="button" value="login" onclick={this.handleSubmit} />
+						</div>
+					);
+				}
+
+				handleSubmit() {
+					this.props.onSubmit({
+						username: this.usernameEl.value,
+						password: this.passwordEl.value,
+					});
+				}
+			}
+
+			class App extends vDomAct.Component {
+				render() {
+					return (
+						<div
+							style={{
+								position: "fixed",
+								top: 0,
+								left: 0,
+								right: 0,
+								bottom: 0,
+								margin: 0,
+								padding: 0,
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+							}}
+						>
+							<Form onSubmit={this.handleLogin}/>
+						</div>
+					);
+				}
+
+				handleLogin(loginData) {
+					alert(`Username: ${loginData.username}, Password: ${loginData.password}`);
+				}
+			}
+
+			vDomAct.render(
+				<App />,
+				document.getElementById("appRoot")
+			);
+		</script>
+	</body>
+</html>

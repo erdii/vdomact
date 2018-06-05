@@ -31,6 +31,8 @@ export function setAttribute(dom: any, key: any, value: any) {
 		for (const prop in value) {
 			dom.style[prop] = value[prop];
 		}
+	} else if (key === "ref" && typeof value === "function") {
+		value(dom);
 	} else if (typeof value !== "object" && typeof value !== "function") {
 		dom.setAttribute(key, value);
 	}
