@@ -1,6 +1,6 @@
 {
   "name": "@erdii/vdomact",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "react-like virtual dom",
   "main": "dist/vdomact.js",
   "types": "dist/index.d.ts",
