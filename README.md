@@ -18,6 +18,7 @@
 
 * basic rendering ✔️️️
 * refs ✔️️️
+* dangerouslySetInnerHTML ✔️️️
 * context ❌
 * correct typings ❌
 * tests ❌

@@ -28,9 +28,12 @@ export function setAttribute(dom: any, key: any, value: any) {
 	} else if (key === "key") {
 		dom[KEY_SYMBOL] = value;
 	} else if (key === "style" && typeof value === "object") {
+		// can we do this more efficiently?
 		for (const prop in value) {
 			dom.style[prop] = value[prop];
 		}
+	} else if (key === "dangerouslySetInnerHTML" && typeof value === "string") {
+		dom.innerHTML = value;
 	} else if (key === "ref" && typeof value === "function") {
 		value(dom);
 	} else if (typeof value !== "object" && typeof value !== "function") {
