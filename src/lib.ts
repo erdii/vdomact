@@ -109,7 +109,12 @@ export function patch(dom: HTMLElement|Text, vdom: any, parent = dom.parentNode)
 
 		for (const index in Array.from(dom.childNodes)) {
 			const child = dom.childNodes[index];
-			const key = (child as any)[KEY_SYMBOL] || index;
+			let key = (child as any)[KEY_SYMBOL]
+			if (key == null && (child as any).tagName != null) {
+				key = (child as any).tagName + index;
+			} else if (key == null && (child as any).tagName == null) {
+				key = child.textContent;
+			}
 			pool[key] = child;
 		}
 
